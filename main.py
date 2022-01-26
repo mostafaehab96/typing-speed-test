@@ -55,6 +55,7 @@ def countdown(count):
         correct_cpm, correct_wpm = test_manager.calculate_speed(typed_words, text.split(), chars)
         canvas.itemconfig(canvas_text, text=f"Your correct CPM if {correct_cpm} and your averge WPM is {correct_wpm}")
         canvas.yview_moveto('0.3')
+        user_input.delete("1.0", END)
         user_input.config(state="disabled")
 
 
@@ -71,18 +72,21 @@ def add_text():
 def restart():
     global starting, chars, typed_words, seconds_passed
     canvas.yview_moveto("0.0")
-    space_pressed(1)
-    add_text()
     user_input.config(state="normal")
+    user_input.delete("1.0", END)
+    user_input.insert("1.0", "                         ")
+    add_text()
+    starting = True
+    cpm.config(text="0")
+    wpm.config(text="0")
+    chars = 0
+    seconds_passed = 0
+    typed_words = []
+
     if timer is not None:
         window.after_cancel(timer)
         time.config(text="60")
-        starting = True
-        cpm.config(text="0")
-        wpm.config(text="0")
-        chars = 0
-        seconds_passed = 0
-        typed_words = []
+
 
 
 def space_pressed(e):
